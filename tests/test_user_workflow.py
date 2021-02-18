@@ -1,32 +1,18 @@
-from selene.support.shared import browser
-from selene import have, be
+from tests import todomvc
 
-def test_e2e_task_management():
 
-    browser.open( 'https://todomvc4tasj.herokuapp.com/')
+def test_main_management():
 
-    browser.should(have.js_returned(True,
-            "return $._data($('#clear-completed').get(0), 'events')"
-            ".hasOwnProperty('click')"))
-    browser.element('#new-todo').type('a').press_enter()
-    browser.element('#new-todo').type('b').press_enter()
-    browser.element('#new-todo').type('c').press_enter()
-    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
+    todomvc.open()
 
-    browser.all('#todo-list li').element_by(have.exact_text('b')).double_click()
-    browser.element('#todo-list').element('.editing').element('.edit')\
-        .type('*').press_enter()
+    todomvc.add('a', 'b', 'c')
+    todomvc.should_be('a', 'b', 'c')
 
-    browser.all('#todo-list li ').element_by(have.exact_text('b*'))\
-        .element('.toggle').click()
-    browser.element('#clear-completed').click()
-    browser.all('#todo-list>li').should(have.exact_texts('a', 'c'))
+    todomvc.edit('b', 'b*')
+    todomvc.toggle('b*')
+    todomvc.clear_completed()
+    todomvc.should_be('a', 'c')
 
-    browser.all('#todo-list li').element_by(have.exact_text('a'))\
-        .double_click()
-    browser.element('#todo-list').element('.editing').element('.edit')\
-        .type('*').press_escape()
-
-    browser.all('#todo-list li').element_by(have.exact_text('a')).hover()\
-        .element('.destroy').click()
-    browser.all('#todo-list>li').should(have.exact_texts('c'))
+    todomvc.cancel_editing('a', 'a*')
+    todomvc.delete('a')
+    todomvc.should_be('c')
