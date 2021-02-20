@@ -1,10 +1,9 @@
-from selene.support.conditions import have
+from selene.support.conditions import have, be
 from selene.support.shared import browser
 from selene.core import command
 
 
-def todo_all():
-    return browser.all('#todo-list>li')
+todo_all = browser.all('#todo-list>li')
 
 
 def visit():
@@ -23,13 +22,12 @@ def add(*todos: str):
 
 
 def should_be(*todos: str):
-    todo_all().should(have.exact_texts(*todos))
+    todo_all.should(have.exact_texts(*todos))
 
 
 def todo_editing(todo: str, todo_new: str):
-    todo_all().element_by(have.exact_text(todo)).double_click()
-    return browser.element('#todo-list').element('.editing').element('.edit')\
-        .perform(command.js.set_value(todo_new))
+    todo_all.element_by(have.exact_text(todo)).double_click()
+    return todo_all.element_by(have.css_class('editing')).element('.edit').perform(command.js.set_value(todo_new))
 
 
 def edit(todo, todo_new):
@@ -37,7 +35,7 @@ def edit(todo, todo_new):
 
 
 def toggle(todo):
-    todo_all().element_by(have.exact_text(todo)).element('.toggle').click()
+    todo_all.element_by(have.exact_text(todo)).element('.toggle').click()
 
 
 def clear_completed():
@@ -45,7 +43,7 @@ def clear_completed():
 
 
 def delete(todo):
-    todo_all().element_by(have.exact_text(todo)).hover()\
+    todo_all.element_by(have.exact_text(todo)).hover()\
         .element('.destroy').click()
 
 
