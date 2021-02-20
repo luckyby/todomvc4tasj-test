@@ -1,9 +1,9 @@
-from tests import todomvc
+from todomvc4tasj_test.module import todomvc
 
 
 def test_main_management():
 
-    todomvc.open()
+    todomvc.visit()
 
     todomvc.add('a', 'b', 'c')
     todomvc.should_be('a', 'b', 'c')
