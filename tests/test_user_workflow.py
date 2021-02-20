@@ -1,5 +1,3 @@
-from selene.support.shared import browser
-
 from todomvc4tasj_test.module import todomvc
 
 
