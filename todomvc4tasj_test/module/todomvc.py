@@ -12,7 +12,7 @@ def visit():
     browser.should(have.js_returned(
         True,
         "return $._data($('#clear-completed')[0], 'events')"
-        ".hasOwnProperty('click')"
+            ".hasOwnProperty('click')"
         "&& "
         "Object.keys(require.s.contexts._.defined).length === 39"))
 
