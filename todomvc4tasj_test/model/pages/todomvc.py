@@ -14,6 +14,9 @@ class ToDoMVC:
         return self.browser\
             .element('#todo-list').element('.editing').element('.edit')
 
+    def visit(self):
+        self.browser.open('https://todomvc4tasj.herokuapp.com/')
+
     def add(self, *todos: str):
         for todo in todos:
             self.browser\
@@ -26,7 +29,7 @@ class ToDoMVC:
 
     def should_be(self, *todos: str):
         if todos is None or todos == ('',):
-            self.todo_all.should(have.exact_texts(''))
+            self.todo_all.should(have.size(0))
         else:
             self.todo_all.should(have.exact_texts(*todos))
 

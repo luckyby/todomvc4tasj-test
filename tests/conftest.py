@@ -5,11 +5,22 @@ from selene.support.shared import browser
 
 def local_storage_set(local_storage_value):
     browser.open('https://todomvc4tasj.herokuapp.com/')
+    browser.driver.execute_script("localStorage.clear()")
     local_storage_value_dumped = json.dumps(local_storage_value)
     browser.driver.execute_script("window.localStorage.setItem("
             "'todos-troopjs', "
             "arguments[0]);", local_storage_value_dumped)
     browser.driver.refresh()
+
+
+@pytest.fixture()
+def empty_todo_list():
+    local_storage_value = []
+    local_storage_set(local_storage_value)
+
+    yield
+
+    browser.driver.execute_script("localStorage.clear()")
 
 
 @pytest.fixture()
@@ -26,6 +37,17 @@ def a_active_b_active():
 @pytest.fixture()
 def a_active_b_completed():
     local_storage_value = [{"completed": False, "title": "a"},
+                            {"completed": True, "title": "b"}]
+    local_storage_set(local_storage_value)
+
+    yield
+
+    browser.driver.execute_script("localStorage.clear()")
+
+
+@pytest.fixture()
+def a_completed_b_completed():
+    local_storage_value = [{"completed": True, "title": "a"},
                             {"completed": True, "title": "b"}]
     local_storage_set(local_storage_value)
 

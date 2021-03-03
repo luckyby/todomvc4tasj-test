@@ -14,6 +14,20 @@ def test_edit_with(a_active_b_completed):
     todomvc.edit('b', 'b*')
     todomvc.should_be('a*', 'b*')
 
+    todomvc.edit('a*', '')
+    todomvc.should_be('b*')
+
+    todomvc.edit('b*', '')
+    todomvc.should_be('')
+
+
+def test_cancel_editing_with(a_active_b_completed):
+    todomvc.cancel_editing('a', 'a*')
+    todomvc.should_be('a', 'b')
+
+    todomvc.cancel_editing('b', 'b*')
+    todomvc.should_be('a', 'b')
+
 
 def test_toggle_with(a_active_b_completed):
     todomvc.toggle('a')
@@ -28,19 +42,16 @@ def test_clear_completed_with(a_active_b_completed):
     todomvc.should_be('a')
 
 
-def test_cancel_editing_with(a_active_b_completed):
-    todomvc.cancel_editing('a', 'a*')
-    todomvc.should_be('a', 'b')
-
-    todomvc.cancel_editing('b', 'b*')
-    todomvc.should_be('a', 'b')
+def test_clear_completed_with(a_completed_b_completed):
+    todomvc.clear_completed()
+    todomvc.should_be('')
 
 
 def test_delete_with(a_active_b_completed_c_active):
-    todomvc.delete('b')
-    todomvc.should_be('a', 'c')
-
     todomvc.delete('a')
+    todomvc.should_be('b', 'c')
+
+    todomvc.delete('b')
     todomvc.should_be('c')
 
     todomvc.edit('c', '')
