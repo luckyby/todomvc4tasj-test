@@ -1,4 +1,4 @@
-from todomvc4tasj_test.model.pages import todomvc
+from todomvc4tasj_test.model import todomvc
 
 def test_main_management():
 

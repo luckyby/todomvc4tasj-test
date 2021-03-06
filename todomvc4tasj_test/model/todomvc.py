@@ -5,7 +5,6 @@ from selene.core import command
 
 class ToDoMVC:
 
-
     def __init__(self, browser = shared_browser):
         self.browser = browser
         self.todo_all = browser.all("#todo-list>li")
@@ -16,15 +15,23 @@ class ToDoMVC:
 
     def visit(self):
         self.browser.open('https://todomvc4tasj.herokuapp.com/')
+        self.browser \
+            .should(have.js_returned(
+                True,
+                 "return  $._data($('#clear-completed').get(0), 'events')"
+                        ".hasOwnProperty('click') "
+                 "&& "
+                 "Object.keys(require.s.contexts._.defined).length === 39")
+            )
+
+    def visit_with_a_active_b_completed(self):
+        self.visit()
+        self.add('a', 'b')
+        self.toggle('b')
+
 
     def add(self, *todos: str):
         for todo in todos:
-            self.browser\
-                .should(have.js_returned(True,
-                    "return  $._data($('#clear-completed').get(0), 'events')"
-                        ".hasOwnProperty('click') "
-                    "&& "
-                    "Object.keys(require.s.contexts._.defined).length === 39"))
             self.browser.element('#new-todo').type(todo).press_enter()
 
     def should_be(self, *todos: str):
@@ -59,6 +66,8 @@ class ToDoMVC:
 
     def delete(self, todo: str):
         self.todo_all.element_by(have.exact_text(todo)).hover() \
+            .element('.destroy').should(be.clickable)
+        self.todo_all.element_by(have.exact_text(todo)).hover() \
             .element('.destroy').click()
 
     def cancel_editing(self, todo: str, todo_new: str):
@@ -70,6 +79,10 @@ class ToDoMVC:
         self.browser.element('#toggle-all').should(be.clickable)
         self.browser.element('#toggle-all').click()
 
-    def items_left(self):
-        return self.browser.element('#todo-count strong')
+    def should_be_items_left(self, count):
+        if count == 0 and len(self.todo_all) == 0:
+            self.todo_all.should(have.size(0))
+        else:
+            self.browser.element('#todo-count strong')\
+                .should(have.exact_text(f'{count}'))
 
