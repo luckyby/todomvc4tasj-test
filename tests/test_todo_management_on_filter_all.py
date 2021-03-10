@@ -94,14 +94,23 @@ def test_delete_one_to_empty():
 
     todomvc.should_be_empty()
 
+def test_clear_completed():
+    todomvc.visit_with('a', 'b', 'c')
+    todomvc.toggle('b')
 
-def test_complete_all_active():
+    todomvc.clear_completed()
+
+    todomvc.should_be_active('a', 'c')
+    todomvc.should_be_completed()
+    todomvc.should_be_items_left(2)
+
+def test_complete_all():
     todomvc.visit_with('a', 'b', 'c')
 
     todomvc.toggle_all()
 
     todomvc.should_be_completed('a', 'b', 'c')
-    # todomvc.should_be_active('')
+    todomvc.should_be_active()
     todomvc.should_be_items_left(0)
 
 
@@ -112,5 +121,5 @@ def test_activate_all():
     todomvc.toggle_all()
 
     todomvc.should_be_active('a', 'b', 'c')
-    # todomvc.should_be_completed('')
+    todomvc.should_be_completed()
     todomvc.should_be_items_left(3)
