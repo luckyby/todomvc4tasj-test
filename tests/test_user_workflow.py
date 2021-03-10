@@ -2,7 +2,7 @@ from todomvc4tasj_test.model import todomvc
 
 def test_main_management():
 
-    todomvc.visit()
+    todomvc.visit_with()
 
     todomvc.add('a', 'b', 'c')
     todomvc.should_be('a', 'b', 'c')
