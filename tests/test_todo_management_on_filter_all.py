@@ -7,7 +7,7 @@ def test_add_one_when_empty():
 
     todomvc.add('a')
 
-    todomvc.should_be('a')
+    todomvc.should_have('a')
     todomvc.should_be_items_left(1)
 
 
@@ -17,16 +17,16 @@ def test_add_several_when_empty():
 
     todomvc.add('a','b', 'c')
 
-    todomvc.should_be('a', 'b', 'c')
+    todomvc.should_have('a', 'b', 'c')
     todomvc.should_be_items_left(3)
 
 
 def test_edit():
     todomvc.visit_with('a', 'b', 'c')
 
-    todomvc.edit('b', 'b*')
+    todomvc.edit('b', 'b edited')
 
-    todomvc.should_be('a', 'b*', 'c')
+    todomvc.should_have('a', 'b edited', 'c')
     todomvc.should_be_items_left(3)
 
 
@@ -35,25 +35,25 @@ def test_delete_by_edit_to_empty():
 
     todomvc.edit('b', '')
 
-    todomvc.should_be('a', 'c')
+    todomvc.should_have('a', 'c')
     todomvc.should_be_items_left(2)
 
 
 def test_edit_by_focus_change():
     todomvc.visit_with('a', 'b', 'c')
 
-    todomvc.edit_with_press_tab('b', 'b*')
+    todomvc.edit_with_press_tab('b', 'b edited')
 
-    todomvc.should_be('a', 'b*', 'c')
+    todomvc.should_have('a', 'b edited', 'c')
     todomvc.should_be_items_left(3)
 
 
 def test_cancel_editing():
     todomvc.visit_with('a', 'b', 'c')
 
-    todomvc.cancel_editing('b', 'b*')
+    todomvc.cancel_editing('b', 'b edited')
 
-    todomvc.should_be('a', 'b', 'c')
+    todomvc.should_have('a', 'b', 'c')
     todomvc.should_be_items_left(3)
 
 
@@ -83,7 +83,7 @@ def test_delete():
 
     todomvc.delete('b')
 
-    todomvc.should_be('a','c')
+    todomvc.should_have('a', 'c')
     todomvc.should_be_items_left(2)
 
 

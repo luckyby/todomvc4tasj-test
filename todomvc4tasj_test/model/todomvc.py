@@ -9,11 +9,6 @@ class ToDoMVC:
         self.browser = browser
         self.todo_all = browser.all("#todo-list>li")
 
-    def start_editing(self, todo: str, todo_new: str):
-        self.todo_all.element_by(have.exact_text(todo)).double_click()
-        return self.todo_all.element_by(have.css_class('editing'))\
-            .element('.edit').perform(command.js.set_value(todo_new))
-
     def visit(self):
         self.browser.open('https://todomvc4tasj.herokuapp.com/')
         self.browser \
@@ -37,6 +32,11 @@ class ToDoMVC:
         self.todo_all.element_by(have.exact_text(todo)).hover() \
             .element('.destroy').click()
 
+    def start_editing(self, todo: str, todo_new: str):
+        self.todo_all.element_by(have.exact_text(todo)).double_click()
+        return self.todo_all.element_by(have.css_class('editing'))\
+            .element('.edit').perform(command.js.set_value(todo_new))
+
     def edit(self, todo: str, todo_new: str):
         self.start_editing(todo, todo_new).press_enter()
 
@@ -56,7 +56,7 @@ class ToDoMVC:
     def clear_completed(self):
         self.browser.element('#clear-completed').click()
 
-    def should_be(self, *todos: str):
+    def should_have(self, *todos: str):
         self.todo_all.should(have.exact_texts(*todos))
 
     def should_be_active(self, *todos):
